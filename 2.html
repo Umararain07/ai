@@ -1,0 +1,1891 @@
+
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Galaxy | The Smartest QR Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/party-js@latest/bundle/party.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --color-primary: 124, 58, 237;
+            --color-secondary: 99, 102, 241;
+            --color-accent: 217, 70, 239;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #111827;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .dark body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, rgb(var(--color-secondary)), rgb(var(--color-primary)), rgb(var(--color-accent)));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient-x 8s ease infinite;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, rgb(var(--color-secondary)), rgb(var(--color-primary)), rgb(var(--color-accent)));
+            background-size: 200% 200%;
+            animation: gradient-x 8s ease infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        
+        .dark .glass-effect {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        
+        .qr-scan-animation {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .qr-scan-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(var(--color-primary), 0.7), transparent);
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes gradient-x {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(200px); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(var(--color-primary), 0.4); }
+            50% { box-shadow: 0 0 20px 10px rgba(var(--color-primary), 0.1); }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-pulse-glow {
+            animation: pulse-glow 3s ease infinite;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(var(--color-primary), 0.5);
+            border-radius: 10px;
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(var(--color-primary), 0.7);
+        }
+        
+        .hand-wave {
+            animation-name: wave;
+            animation-duration: 2.5s;
+            animation-iteration-count: infinite;
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+        
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        
+        .nfc-tag {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nfc-tag::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(var(--color-primary), 0.7), transparent 30%);
+            animation: rotate 4s linear infinite;
+        }
+        
+        .nfc-tag::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: white;
+            border-radius: inherit;
+        }
+        
+        .dark .nfc-tag::after {
+            background: #1e293b;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .qr-pattern-dots {
+            fill: currentColor;
+            shape-rendering: crispEdges;
+        }
+        
+        .qr-pattern-rounded {
+            fill: currentColor;
+            rx: 4;
+            ry: 4;
+        }
+        
+        .qr-pattern-circles {
+            fill: currentColor;
+            r: 2.5;
+        }
+        
+        .qr-pattern-squares {
+            fill: currentColor;
+            shape-rendering: crispEdges;
+        }
+        
+        .ai-assistant-bubble {
+            border-radius: 20px 20px 4px 20px;
+            background: rgba(var(--color-primary), 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-bubble {
+            border-radius: 20px 20px 20px 4px;
+            background: rgba(229, 231, 235, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        
+        .dark .user-bubble {
+            background: rgba(30, 41, 59, 0.7);
+        }
+        
+        .voice-recording {
+            animation: pulse-opacity 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-opacity {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .holographic-effect {
+            background: linear-gradient(135deg, 
+                rgba(124, 58, 237, 0.1) 0%, 
+                rgba(99, 102, 241, 0.2) 50%, 
+                rgba(217, 70, 239, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .holographic-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 30%,
+                rgba(255, 255, 255, 0.1) 45%,
+                rgba(255, 255, 255, 0) 60%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: holographic-shine 6s linear infinite;
+        }
+        
+        @keyframes holographic-shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) rotate(30deg); }
+        }
+        
+        .qr-3d-effect {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .qr-3d-inner {
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .qr-3d-effect:hover .qr-3d-inner {
+            transform: rotateX(0) rotateY(0);
+        }
+    </style>
+</head>
+<body class="light bg-gray-50 dark:bg-dark-900 transition-colors duration-300 min-h-screen flex flex-col">
+    <!-- App Container -->
+    <div class="flex-1 container mx-auto px-4 py-6 lg:py-8 relative">
+        <!-- Floating Background Elements -->
+        <div class="fixed top-20 left-10 w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 opacity-10 -z-10 animate-float"></div>
+        <div class="fixed bottom-1/4 right-20 w-24 h-24 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 opacity-10 -z-10 animate-float animation-delay-2000"></div>
+        <div class="fixed top-1/3 right-1/4 w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 opacity-10 -z-10 animate-float animation-delay-3000"></div>
+        
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8 lg:mb-12">
+            <div class="flex items-center">
+                <div class="relative mr-3">
+                    <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-white shadow-lg">
+                        <i class="fas fa-qrcode text-xl"></i>
+                        <div class="absolute -inset-1 rounded-lg bg-gradient-to-r from-primary-500 to-purple-500 opacity-75 blur-sm -z-10"></div>
+                    </div>
+                </div>
+                <h1 class="text-2xl font-bold gradient-text font-display">QR <span class="font-bold">Galaxy</span></h1>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button id="ai-assistant-btn" class="p-2 rounded-full bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-dark-700 dark:to-dark-800 text-purple-600 dark:text-purple-400 hover:from-purple-200 hover:to-indigo-200 dark:hover:from-dark-600 dark:hover:to-dark-700 transition-all shadow-sm relative group">
+                    <i class="fas fa-robot"></i>
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </button>
+                <button id="history-btn" class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all shadow-sm relative">
+                    <i class="fas fa-history"></i>
+                    <span id="history-badge" class="absolute -top-1 -right-1 bg-primary-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all shadow-sm">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                <button id="user-menu-btn" class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all shadow-sm">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto">
+            <!-- Hero Section with AI Prompt -->
+            <div class="text-center mb-10 lg:mb-16">
+                <h2 class="text-3xl lg:text-5xl font-bold mb-4 font-display leading-tight">
+                    <span class="gradient-text">Your Universal</span><br>
+                    <span class="text-gray-800 dark:text-white">QR Interaction Platform</span>
+                </h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
+                    Create, manage, and track smart QR codes with AI-powered features for the modern world.
+                </p>
+                
+                <!-- AI Prompt Input -->
+                <div class="max-w-2xl mx-auto relative">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="ai-prompt-input" 
+                            placeholder="Ask AI to create a QR code for a restaurant menu with vegan options..." 
+                            class="w-full px-5 py-4 rounded-full border border-gray-300 dark:border-dark-700 dark:bg-dark-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm pl-12 pr-16 transition-all"
+                        >
+                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <button id="voice-input-btn" class="absolute right-16 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-primary-500 dark:hover:text-primary-400">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button id="ai-submit-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-primary-500 text-white p-2 rounded-full hover:bg-primary-600 transition-all">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-left px-5">
+                        Try: "QR for my LinkedIn with purple color and logo" or "WiFi QR for guests with 24h expiry"
+                    </p>
+                </div>
+            </div>
+
+            <!-- Generator Dashboard -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                <!-- Generator Panel -->
+                <div class="lg:col-span-2 bg-white dark:bg-dark-800 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-200 dark:border-dark-700">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+                                <i class="fas fa-magic mr-2 gradient-text"></i>
+                                Smart QR Generator
+                            </h2>
+                            <div class="flex space-x-2">
+                                <button id="batch-mode-btn" class="text-xs px-3 py-1 bg-gray-100 dark:bg-dark-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all flex items-center">
+                                    <i class="fas fa-layer-group mr-1"></i>
+                                    Batch Mode
+                                </button>
+                                <button id="template-btn" class="text-xs px-3 py-1 bg-gray-100 dark:bg-dark-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all flex items-center">
+                                    <i class="fas fa-sticky-note mr-1"></i>
+                                    Templates
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Dynamic Tabs -->
+                        <div class="flex overflow-x-auto pb-2 mb-6 custom-scrollbar">
+                            <div class="flex space-x-1">
+                                <button class="tab-btn active px-4 py-2 text-sm font-medium text-primary-500 border-b-2 border-primary-500 whitespace-nowrap" data-tab="url">
+                                    <i class="fas fa-link mr-2"></i>URL
+                                </button>
+                                <button class="tab-btn px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" data-tab="wifi">
+                                    <i class="fas fa-wifi mr-2"></i>WiFi
+                                </button>
+                                <button class="tab-btn px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" data-tab="contact">
+                                    <i class="fas fa-address-card mr-2"></i>Contact
+                                </button>
+                                <button class="tab-btn px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" data-tab="text">
+                                    <i class="fas fa-font mr-2"></i>Text
+                                </button>
+                                <button class="tab-btn px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" data-tab="payment">
+                                    <i class="fas fa-money-bill-wave mr-2"></i>Payment
+                                </button>
+                                <button class="tab-btn px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 whitespace-nowrap" data-tab="social">
+                                    <i class="fas fa-share-alt mr-2"></i>Social
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- URL Tab Content -->
+                        <div id="url-tab" class="tab-content active space-y-6">
+                            <div>
+                                <label for="url-input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center justify-between">
+                                    <span>Website URL</span>
+                                    <button id="paste-url-btn" class="text-xs text-primary-500 dark:text-primary-400 hover:underline flex items-center">
+                                        <i class="fas fa-paste mr-1"></i> Paste
+                                    </button>
+                                </label>
+                                <div class="relative">
+                                    <input 
+                                        type="url" 
+                                        id="url-input" 
+                                        placeholder="https://example.com" 
+                                        class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-700 dark:bg-dark-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all shadow-sm"
+                                    >
+                                    <button id="suggest-url-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-primary-500 dark:hover:text-primary-400 p-1">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Design Options -->
+                                <div class="bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border border-gray-200 dark:border-dark-600">
+                                    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                                        <i class="fas fa-palette mr-2 text-primary-500"></i>
+                                        Design
+                                    </h3>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Color</label>
+                                            <div class="flex flex-wrap gap-2">
+                                                <button data-color="#000000" class="color-btn w-8 h-8 rounded-full bg-black border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500"></button>
+                                                <button data-color="#7c3aed" class="color-btn w-8 h-8 rounded-full bg-primary-500 border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500"></button>
+                                                <button data-color="#3b82f6" class="color-btn w-8 h-8 rounded-full bg-blue-500 border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500"></button>
+                                                <button data-color="#10b981" class="color-btn w-8 h-8 rounded-full bg-emerald-500 border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500"></button>
+                                                <button data-color="#ef4444" class="color-btn w-8 h-8 rounded-full bg-red-500 border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500"></button>
+                                                <button data-color="gradient" class="color-btn w-8 h-8 rounded-full gradient-bg border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500"></button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Pattern</label>
+                                            <div class="grid grid-cols-4 gap-2">
+                                                <button data-pattern="squares" class="pattern-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" class="mr-1">
+                                                        <rect x="3" y="3" width="6" height="6" class="qr-pattern-squares" fill="currentColor"/>
+                                                        <rect x="3" y="15" width="6" height="6" class="qr-pattern-squares" fill="currentColor"/>
+                                                        <rect x="15" y="3" width="6" height="6" class="qr-pattern-squares" fill="currentColor"/>
+                                                        <rect x="15" y="15" width="6" height="6" class="qr-pattern-squares" fill="currentColor"/>
+                                                    </svg>
+                                                    Squares
+                                                </button>
+                                                <button data-pattern="dots" class="pattern-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" class="mr-1">
+                                                        <rect x="3" y="3" width="4" height="4" class="qr-pattern-dots" fill="currentColor"/>
+                                                        <rect x="3" y="15" width="4" height="4" class="qr-pattern-dots" fill="currentColor"/>
+                                                        <rect x="15" y="3" width="4" height="4" class="qr-pattern-dots" fill="currentColor"/>
+                                                        <rect x="15" y="15" width="4" height="4" class="qr-pattern-dots" fill="currentColor"/>
+                                                    </svg>
+                                                    Dots
+                                                </button>
+                                                <button data-pattern="rounded" class="pattern-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" class="mr-1">
+                                                        <rect x="3" y="3" width="6" height="6" class="qr-pattern-rounded" fill="currentColor"/>
+                                                        <rect x="3" y="15" width="6" height="6" class="qr-pattern-rounded" fill="currentColor"/>
+                                                        <rect x="15" y="3" width="6" height="6" class="qr-pattern-rounded" fill="currentColor"/>
+                                                        <rect x="15" y="15" width="6" height="6" class="qr-pattern-rounded" fill="currentColor"/>
+                                                    </svg>
+                                                    Rounded
+                                                </button>
+                                                <button data-pattern="circles" class="pattern-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" class="mr-1">
+                                                        <circle cx="6" cy="6" r="2.5" class="qr-pattern-circles" fill="currentColor"/>
+                                                        <circle cx="6" cy="18" r="2.5" class="qr-pattern-circles" fill="currentColor"/>
+                                                        <circle cx="18" cy="6" r="2.5" class="qr-pattern-circles" fill="currentColor"/>
+                                                        <circle cx="18" cy="18" r="2.5" class="qr-pattern-circles" fill="currentColor"/>
+                                                    </svg>
+                                                    Circles
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Background</label>
+                                            <div class="flex space-x-2">
+                                                <button data-bg="transparent" class="bg-btn w-8 h-8 rounded border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 flex items-center justify-center bg-white dark:bg-dark-900">
+                                                    <i class="fas fa-slash text-xs text-gray-400 dark:text-gray-500"></i>
+                                                </button>
+                                                <button data-bg="#ffffff" class="bg-btn w-8 h-8 rounded border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"></button>
+                                                <button data-bg="#f3f4f6" class="bg-btn w-8 h-8 rounded border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-100"></button>
+                                                <button data-bg="#000000" class="bg-btn w-8 h-8 rounded border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-black"></button>
+                                                <button data-bg="gradient" class="bg-btn w-8 h-8 rounded border-2 border-gray-300 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 gradient-bg"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Branding Options -->
+                                <div class="bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border border-gray-200 dark:border-dark-600">
+                                    <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                                        <i class="fas fa-brush mr-2 text-primary-500"></i>
+                                        Branding
+                                    </h3>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Logo</label>
+                                            <div class="flex items-center">
+                                                <label for="logo-upload" class="cursor-pointer bg-gray-100 dark:bg-dark-600 px-3 py-2 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-dark-500 transition-all flex items-center">
+                                                    <i class="fas fa-image mr-2"></i>Upload
+                                                </label>
+                                                <input type="file" id="logo-upload" accept="image/*" class="hidden">
+                                                <span id="logo-name" class="ml-2 text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs">No logo</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Logo Style</label>
+                                            <div class="grid grid-cols-3 gap-2">
+                                                <button data-logo-style="circle" class="logo-style-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <i class="fas fa-circle mr-1"></i> Circle
+                                                </button>
+                                                <button data-logo-style="square" class="logo-style-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <i class="fas fa-square mr-1"></i> Square
+                                                </button>
+                                                <button data-logo-style="none" class="logo-style-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <i class="fas fa-slash mr-1"></i> None
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Frame</label>
+                                            <div class="grid grid-cols-3 gap-2">
+                                                <button data-frame="none" class="frame-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <i class="fas fa-slash mr-1"></i> None
+                                                </button>
+                                                <button data-frame="modern" class="frame-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <i class="fas fa-square mr-1"></i> Modern
+                                                </button>
+                                                <button data-frame="rounded" class="frame-btn px-2 py-1 text-xs bg-gray-100 dark:bg-dark-600 rounded border border-gray-300 dark:border-dark-500 flex items-center justify-center">
+                                                    <i class="fas fa-circle mr-1"></i> Rounded
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Smart Options -->
+                            <div class="bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border border-gray-200 dark:border-dark-600">
+                                <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center justify-between">
+                                    <span><i class="fas fa-brain mr-2 text-primary-500"></i> Smart Options</span>
+                                    <button id="smart-options-toggle" class="text-xs text-primary-500 dark:text-primary-400 hover:underline">
+                                        <i class="fas fa-chevron-down mr-1"></i> Show
+                                    </button>
+                                </h3>
+                                
+                                <div id="smart-options-content" class="hidden space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" id="dynamic-toggle" class="rounded border-gray-300 text-primary-500 focus:ring-primary-500 dark:border-dark-600 dark:bg-dark-900">
+                                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Dynamic QR</span>
+                                            </label>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Change content without changing the QR code</p>
+                                        </div>
+                                        <button id="dynamic-info-btn" class="text-xs text-blue-500 dark:text-blue-400 hover:underline flex items-center">
+                                            <i class="fas fa-info-circle mr-1"></i> Learn more
+                                        </button>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="analytics-toggle" class="rounded border-gray-300 text-primary-500 focus:ring-primary-500 dark:border-dark-600 dark:bg-dark-900">
+                                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Scan Analytics</span>
+                                        </label>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Track scans, locations, and devices</p>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Expiration</label>
+                                        <div class="flex items-center space-x-2">
+                                            <select id="expiry-type" class="flex-1 text-sm px-3 py-2 rounded border border-gray-300 dark:border-dark-600 dark:bg-dark-900 dark:text-white">
+                                                <option value="none">No expiry</option>
+                                                <option value="date">Specific date</option>
+                                                <option value="scans">After scans</option>
+                                                <option value="hours">Time period</option>
+                                            </select>
+                                            <input type="text" id="expiry-value" class="flex-1 text-sm px-3 py-2 rounded border border-gray-300 dark:border-dark-600 dark:bg-dark-900 dark:text-white hidden" placeholder="Value">
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="password-toggle" class="rounded border-gray-300 text-primary-500 focus:ring-primary-500 dark:border-dark-600 dark:bg-dark-900">
+                                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Password Protection</span>
+                                        </label>
+                                        <div id="password-field" class="hidden mt-2">
+                                            <input type="password" id="qr-password" class="block w-full px-3 py-2 rounded-md border border-gray-300 dark:border-dark-600 dark:bg-dark-900 dark:text-white text-sm" placeholder="Set password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Generate Button -->
+                            <button id="generate-btn" class="w-full gradient-bg text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition-all transform hover:scale-[1.02] active:scale-95 shadow-md flex items-center justify-center animate-pulse-glow">
+                                <i class="fas fa-bolt mr-2"></i>
+                                Generate Smart QR
+                            </button>
+                        </div>
+                        
+                        <!-- Other tabs content would go here (similar structure) -->
+                        <div id="wifi-tab" class="tab-content hidden">
+                            <!-- WiFi tab content -->
+                        </div>
+                        <div id="contact-tab" class="tab-content hidden">
+                            <!-- Contact tab content -->
+                        </div>
+                        <div id="text-tab" class="tab-content hidden">
+                            <!-- Text tab content -->
+                        </div>
+                        <div id="payment-tab" class="tab-content hidden">
+                            <!-- Payment tab content -->
+                        </div>
+                        <div id="social-tab" class="tab-content hidden">
+                            <!-- Social tab content -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview & Analytics Panel -->
+                <div class="flex flex-col space-y-6">
+                    <!-- QR Preview -->
+                    <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-200 dark:border-dark-700 flex-1">
+                        <div class="p-6 flex flex-col h-full">
+                            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center justify-between">
+                                <span><i class="fas fa-eye mr-2 gradient-text"></i> Interactive Preview</span>
+                                <button id="fullscreen-preview-btn" class="text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </h2>
+                            
+                            <div class="flex-1 flex flex-col items-center justify-center">
+                                <div class="qr-3d-effect mb-6">
+                                    <div class="qr-3d-inner bg-white dark:bg-dark-900 p-4 rounded-xl shadow-inner border border-gray-200 dark:border-dark-700 flex items-center justify-center">
+                                        <div id="qr-code" class="w-48 h-48 flex items-center justify-center relative">
+                                            <div class="text-center text-gray-400 dark:text-gray-500">
+                                                <i class="fas fa-qrcode text-5xl mb-2"></i>
+                                                <p class="text-sm">Your QR will appear here</p>
+                                            </div>
+                                            <div id="qr-logo" class="absolute inset-0 flex items-center justify-center pointer-events-none hidden">
+                                                <img id="logo-preview" class="w-12 h-12 rounded-full bg-white p-1" src="" alt="Logo">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="preview-controls" class="w-full space-y-4 hidden">
+                                    <div class="flex items-center justify-center space-x-3">
+                                        <button id="scan-simulate-btn" class="p-2 bg-gray-100 dark:bg-dark-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                                            <i class="fas fa-camera"></i>
+                                        </button>
+                                        <button id="change-color-btn" class="p-2 bg-gray-100 dark:bg-dark-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                                            <i class="fas fa-palette"></i>
+                                        </button>
+                                        <button id="add-frame-btn" class="p-2 bg-gray-100 dark:bg-dark-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                                            <i class="fas fa-square"></i>
+                                        </button>
+                                        <button id="animate-qr-btn" class="p-2 bg-gray-100 dark:bg-dark-700 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                                            <i class="fas fa-magic"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="text-center">
+                                        <button id="test-qr-btn" class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all text-sm">
+                                            <i class="fas fa-mobile-alt mr-2"></i> Test on Device
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-dark-700">
+                        <div class="p-4">
+                            <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+                                <i class="fas fa-bolt mr-2 text-primary-500"></i>
+                                Quick Actions
+                            </h3>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="download-png-btn" class="action-btn flex items-center justify-center px-3 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all text-sm">
+                                    <i class="fas fa-download mr-2"></i> PNG
+                                </button>
+                                <button id="download-svg-btn" class="action-btn flex items-center justify-center px-3 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all text-sm">
+                                    <i class="fas fa-download mr-2"></i> SVG
+                                </button>
+                                <button id="share-qr-btn" class="action-btn flex items-center justify-center px-3 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all text-sm">
+                                    <i class="fas fa-share-alt mr-2"></i> Share
+                                </button>
+                                <button id="print-qr-btn" class="action-btn flex items-center justify-center px-3 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all text-sm">
+                                    <i class="fas fa-print mr-2"></i> Print
+                                </button>
+                                <button id="save-project-btn" class="action-btn flex items-center justify-center px-3 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all text-sm">
+                                    <i class="fas fa-save mr-2"></i> Save
+                                </button>
+                                <button id="nfc-write-btn" class="action-btn flex items-center justify-center px-3 py-2 bg-gray-100 dark:bg-dark-700 rounded-lg border border-gray-300 dark:border-dark-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all text-sm">
+                                    <i class="fas fa-nfc-symbol mr-2"></i> NFC
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features Showcase -->
+            <div class="mb-10">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
+                    <i class="fas fa-star mr-2 gradient-text"></i>
+                    Why QR Galaxy Stands Out
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="feature-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-robot text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-2">AI-Powered Generation</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Use natural language to create perfect QR codes with our smart AI assistant.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-chart-line text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-2">Real-Time Analytics</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Track scans by location, device, and time with beautiful visualizations.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-sync-alt text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-2">Dynamic Content</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Update your QR destination anytime without changing the printed code.</p>
+                    </div>
+                    
+                    <div class="feature-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center text-white mb-4">
+                            <i class="fas fa-nfc-symbol text-xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-800 dark:text-white mb-2">NFC Integration</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Write QR data to NFC tags for contactless sharing (mobile only).</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Use Cases -->
+            <div class="mb-10">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
+                    <i class="fas fa-lightbulb mr-2 gradient-text"></i>
+                    Smart Use Cases
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="use-case-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="flex items-start mb-4">
+                            <div class="flex-shrink-0 bg-primary-100 dark:bg-dark-700 rounded-lg p-3 mr-4 text-primary-500">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-1">Restaurant Menus</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Create dynamic menus that update daily with specials and seasonal items.</p>
+                            </div>
+                        </div>
+                        <button class="text-xs text-primary-500 dark:text-primary-400 hover:underline flex items-center mt-2">
+                            <i class="fas fa-magic mr-1"></i> Try template
+                        </button>
+                    </div>
+                    
+                    <div class="use-case-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="flex items-start mb-4">
+                            <div class="flex-shrink-0 bg-primary-100 dark:bg-dark-700 rounded-lg p-3 mr-4 text-primary-500">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-1">Guest WiFi Access</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Generate WiFi QRs with 24-hour expiry for visitors and customers.</p>
+                            </div>
+                        </div>
+                        <button class="text-xs text-primary-500 dark:text-primary-400 hover:underline flex items-center mt-2">
+                            <i class="fas fa-magic mr-1"></i> Try template
+                        </button>
+                    </div>
+                    
+                    <div class="use-case-card bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-200 dark:border-dark-700 h-full">
+                        <div class="flex items-start mb-4">
+                            <div class="flex-shrink-0 bg-primary-100 dark:bg-dark-700 rounded-lg p-3 mr-4 text-primary-500">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 dark:text-white mb-1">Digital Business Cards</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Share contact details that recipients can save directly to their phones.</p>
+                            </div>
+                        </div>
+                        <button class="text-xs text-primary-500 dark:text-primary-400 hover:underline flex items-center mt-2">
+                            <i class="fas fa-magic mr-1"></i> Try template
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Analytics Preview -->
+            <div class="mb-10 bg-white dark:bg-dark-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-dark-700">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
+                        <i class="fas fa-chart-pie mr-2 gradient-text"></i>
+                        QR Analytics Preview
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border border-gray-200 dark:border-dark-600">
+                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Scan Activity</h4>
+                            <div class="h-64">
+                                <canvas id="scansChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-dark-700 p-4 rounded-lg border border-gray-200 dark:border-dark-600">
+                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Device Distribution</h4>
+                            <div class="h-64">
+                                <canvas id="devicesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-center">
+                        <button class="px-4 py-2 gradient-bg text-white rounded-lg hover:opacity-90 transition-all">
+                            <i class="fas fa-chart-bar mr-2"></i> Unlock Full Analytics
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonials -->
+            <div class="mb-10">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center">
+                    <i class="fas fa-quote-left mr-2 gradient-text"></i>
+                    What Users Say
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-dark-700">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center text-white mr-3">
+                                <span>JD</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 dark:text-white">John D.</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Restaurant Owner</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                            "QR Galaxy revolutionized our menu system. We update specials daily and track which items get the most interest."
+                        </p>
+                        <div class="flex mt-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-dark-700">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-purple-500 flex items-center justify-center text-white mr-3">
+                                <span>SM</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 dark:text-white">Sarah M.</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Marketing Director</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                            "The analytics helped us prove ROI on our QR campaigns. We've increased engagement by 300%."
+                        </p>
+                        <div class="flex mt-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-dark-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-dark-700">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center justify-center text-white mr-3">
+                                <span>AT</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800 dark:text-white">Alex T.</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Event Planner</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm">
+                            "NFC integration is a game-changer for our events. Attendees love tapping to get information instantly."
+                        </p>
+                        <div class="flex mt-3">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CTA Section -->
+            <div class="gradient-bg rounded-2xl p-8 text-center text-white mb-10 relative overflow-hidden">
+                <div class="absolute inset-0 bg-white opacity-10"></div>
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold mb-2">Ready to Transform Your QR Experience?</h3>
+                    <p class="mb-6 max-w-2xl mx-auto">Join thousands of businesses and creators using QR Galaxy to connect with their audience.</p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button class="px-6 py-3 bg-white text-primary-500 rounded-lg font-medium hover:bg-opacity-90 transition-all">
+                            Get Started Free
+                        </button>
+                        <button class="px-6 py-3 bg-black bg-opacity-20 text-white rounded-lg font-medium hover:bg-opacity-30 transition-all border border-white border-opacity-30">
+                            <i class="fas fa-play-circle mr-2"></i> Watch Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-dark-800 py-8 border-t border-gray-200 dark:border-dark-700">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-lg gradient-bg flex items-center justify-center text-white mr-3">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <span class="text-lg font-bold gradient-text font-display">QR Galaxy</span>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">The most advanced QR platform with AI-powered features for the modern world.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 dark:text-white uppercase mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Features</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Pricing</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Templates</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Integrations</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 dark:text-white uppercase mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Documentation</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Guides</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Blog</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">API</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 dark:text-white uppercase mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">About</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Careers</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Privacy</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Terms</a></li>
+                        <li><a href="#" class="text-sm text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-200 dark:border-dark-700 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 md:mb-0">© 2023 QR Galaxy. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Privacy Policy</a>
+                    <a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Terms of Service</a>
+                    <a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 transition-all">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- AI Assistant Panel -->
+    <div id="ai-assistant-panel" class="fixed bottom-6 right-6 w-full max-w-md bg-white dark:bg-dark-800 rounded-2xl shadow-2xl overflow-hidden transform translate-y-20 opacity-0 transition-all duration-300 z-50 border border-gray-200 dark:border-dark-700 hidden">
+        <div class="border-b border-gray-200 dark:border-dark-700 p-4 bg-gray-50 dark:bg-dark-900 flex justify-between items-center">
+            <h3 class="font-medium text-gray-800 dark:text-white flex items-center">
+                <i class="fas fa-robot mr-2 text-primary-500"></i>
+                QR Galaxy AI Assistant
+            </h3>
+            <button id="close-ai-btn" class="p-1 rounded-full bg-gray-200 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-dark-600 transition-all">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div id="ai-chat-container" class="h-96 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+            <div class="ai-assistant-bubble p-3 max-w-xs md:max-w-md ml-auto">
+                <p class="text-sm text-gray-800 dark:text-white">Hi there! I'm your QR Galaxy assistant. How can I help you create the perfect QR code today?</p>
+            </div>
+            
+            <div class="user-bubble p-3 max-w-xs md:max-w-md mr-auto">
+                <p class="text-sm text-gray-800 dark:text-white">Create a QR for my restaurant menu</p>
+            </div>
+            
+            <div class="ai-assistant-bubble p-3 max-w-xs md:max-w-md ml-auto">
+                <p class="text-sm text-gray-800 dark:text-white">Great! I'll help you create a QR code for your restaurant menu. Should I make it dynamic so you can update the menu anytime?</p>
+                <div class="flex space-x-2 mt-2">
+                    <button class="ai-suggestion-btn text-xs px-2 py-1 bg-primary-500 text-white rounded hover:bg-primary-600 transition-all">Yes, dynamic</button>
+                    <button class="ai-suggestion-btn text-xs px-2 py-1 bg-gray-200 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-dark-600 transition-all">No, static</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-200 dark:border-dark-700 p-3 bg-gray-50 dark:bg-dark-900">
+            <div class="relative">
+                <input 
+                    type="text" 
+                    id="ai-chat-input" 
+                    placeholder="Ask me to create a QR code..." 
+                    class="w-full px-4 py-2 pr-10 rounded-full border border-gray-300 dark:border-dark-700 dark:bg-dark-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-sm"
+                >
+                <button id="ai-send-btn" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                <button id="ai-voice-btn" class="absolute right-10 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary-500 dark:hover:text-primary-400">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fullscreen QR Preview -->
+    <div id="fullscreen-preview" class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden">
+        <div class="relative p-4 max-w-4xl w-full">
+            <button id="close-fullscreen-btn" class="absolute top-4 right-4 text-white text-2xl z-10">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bg-white p-8 rounded-2xl flex flex-col items-center justify-center">
+                <div id="fullscreen-qr-code" class="w-64 h-64 flex items-center justify-center relative mb-6">
+                    <!-- QR code will be rendered here -->
+                </div>
+                <div class="flex space-x-4">
+                    <button id="fs-download-png" class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all">
+                        <i class="fas fa-download mr-2"></i> PNG
+                    </button>
+                    <button id="fs-download-svg" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-all">
+                        <i class="fas fa-download mr-2"></i> SVG
+                    </button>
+                    <button id="fs-print" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-all">
+                        <i class="fas fa-print mr-2"></i> Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dynamic QR Info Modal -->
+    <div id="dynamic-info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+                        <i class="fas fa-sync-alt mr-2 gradient-text"></i>
+                        Dynamic QR Codes
+                    </h3>
+                    <button id="close-dynamic-info" class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                    <p>Dynamic QR codes allow you to change the destination URL or content without needing to reprint or redistribute the QR code.</p>
+                    
+                    <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 rounded-lg p-4">
+                        <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-2 flex items-center">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            Perfect for:
+                        </h4>
+                        <ul class="list-disc list-inside text-sm space-y-1">
+                            <li>Marketing campaigns where links might change</li>
+                            <li>Menus with daily specials</li>
+                            <li>Event information that gets updated</li>
+                            <li>Product details that evolve over time</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="got-it-dynamic-btn" class="px-4 py-2 gradient-bg text-white rounded-lg hover:opacity-90 transition-all">
+                        Got it!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Voice Input Indicator -->
+    <div id="voice-input-indicator" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-dark-800 rounded-2xl p-8 text-center max-w-sm">
+            <div class="w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center text-white mx-auto mb-4 voice-recording">
+                <i class="fas fa-microphone text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Listening...</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">Speak clearly to describe your QR code</p>
+            <button id="stop-voice-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all">
+                <i class="fas fa-stop mr-2"></i> Stop
+            </button>
+        </div>
+    </div>
+    
+    <!-- NFC Write Modal -->
+    <div id="nfc-write-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center">
+                        <i class="fas fa-nfc-symbol mr-2 gradient-text"></i>
+                        Write to NFC Tag
+                    </h3>
+                    <button id="close-nfc-modal" class="p-2 rounded-full bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                    <p>Hold your NFC tag near your device to write the QR code data to it.</p>
+                    
+                    <div class="flex justify-center my-6">
+                        <div class="nfc-tag w-24 h-24 rounded-xl flex items-center justify-center relative">
+                            <i class="fas fa-nfc-symbol text-4xl z-10 text-primary-500"></i>
+                        </div>
+                    </div>
+                    
+                    <div id="nfc-write-status" class="text-center py-3 rounded-lg bg-gray-100 dark:bg-dark-700">
+                        <p class="text-sm">Waiting for NFC tag...</p>
+                    </div>
+                    
+                    <div class="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-100 dark:border-yellow-800 rounded-lg p-4 mt-4">
+                        <h4 class="font-medium text-yellow-800 dark:text-yellow-200 mb-2 flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Note
+                        </h4>
+                        <p class="text-sm">NFC writing is only available on supported mobile devices with NFC capability.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="cancel-nfc-write" class="px-4 py-2 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-all mr-3">
+                        Cancel
+                    </button>
+                    <button id="try-again-nfc-write" class="px-4 py-2 gradient-bg text-white rounded-lg hover:opacity-90 transition-all hidden">
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Template Gallery -->
+    <div id="template-gallery" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col">
+            <div class="border-b border-gray-200 dark:border-dark-700 p-4 bg-gray-50 dark:bg-dark-900 flex justify-between items-center">
+                <h3 class="font-medium text-gray-800 dark:text-white flex items-center">
+                    <i class="fas fa-sticky-note mr-2 text-primary-500"></i>
+                    QR Templates Gallery
+                </h3>
+                <button id="close-template-gallery" class="p-2 rounded-full bg-gray-200 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-dark-600 transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Template items will be added here dynamically -->
+                    <div class="template-card bg-white dark:bg-dark-700 rounded-lg border border-gray-200 dark:border-dark-600 overflow-hidden hover:shadow-md transition-all cursor-pointer">
+                        <div class="h-40 bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-dark-600 dark:to-dark-700 flex items-center justify-center">
+                            <div class="w-24 h-24 bg-white p-1 rounded border border-gray-300 flex items-center justify-center">
+                                <i class="fas fa-utensils text-3xl text-primary-500"></i>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <h4 class="font-medium text-gray-800 dark:text-white mb-1">Restaurant Menu</h4>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Dynamic QR for updating menus</p>
+                            <button class="text-xs text-primary-500 dark:text-primary-400 hover:underline mt-2 w-full text-left">
+                                Use Template <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- More template cards... -->
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 dark:border-dark-700 p-3 bg-gray-50 dark:bg-dark-900">
+                <div class="flex justify-between items-center">
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Need a custom template?</p>
+                    <button class="text-sm text-primary-500 dark:text-primary-400 hover:underline flex items-center">
+                        Request Template <i class="fas fa-plus ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Batch Mode Panel -->
+    <div id="batch-mode-panel" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0 flex flex-col">
+            <div class="border-b border-gray-200 dark:border-dark-700 p-4 bg-gray-50 dark:bg-dark-900 flex justify-between items-center">
+                <h3 class="font-medium text-gray-800 dark:text-white flex items-center">
+                    <i class="fas fa-layer-group mr-2 text-primary-500"></i>
+                    Batch QR Generator
+                </h3>
+                <button id="close-batch-mode" class="p-2 rounded-full bg-gray-200 dark:bg-dark-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-dark-600 transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Upload CSV File</h4>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-dark-700 rounded-lg p-6 text-center">
+                            <i class="fas fa-file-csv text-4xl text-gray-400 dark:text-gray-500 mb-3"></i>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Drag & drop your CSV file here</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-500 mb-4">or</p>
+                            <label for="batch-csv-upload" class="cursor-pointer bg-gray-100 dark:bg-dark-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-200 dark:hover:bg-dark-600 transition-all inline-block">
+                                <i class="fas fa-upload mr-2"></i> Select File
+                            </label>
+                            <input type="file" id="batch-csv-upload" accept=".csv" class="hidden">
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">CSV should contain URLs or text in the first column. Optional columns: names, colors, logos.</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Batch Settings</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Color Scheme</label>
+                                <select class="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-dark-700 dark:bg-dark-900 dark:text-white">
+                                    <option>Same for all</option>
+                                    <option>Random colors</option>
+                                    <option>From CSV column</option>
+                                    <option>Gradient sequence</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Naming</label>
+                                <select class="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-dark-700 dark:bg-dark-900 dark:text-white">
+                                    <option>From CSV</option>
+                                    <option>Auto-generated</option>
+                                    <option>Prefix + number</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Output Format</label>
+                                <select class="w-full text-sm px-3 py-2 rounded border border-gray-300 dark:border-dark-700 dark:bg-dark-900 dark:text-white">
+                                    <option>ZIP with PNGs</option>
+                                    <option>PDF document</option>
+                                    <option>SVG collection</option>
+                                    <option>Print-ready sheet</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview (First 3)</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <!-- Preview items will be added here -->
+                            <div class="bg-gray-100 dark:bg-dark-700 rounded-lg p-3 flex flex-col items-center">
+                                <div class="w-20 h-20 bg-white dark:bg-dark-800 mb-2 flex items-center justify-center">
+                                    <i class="fas fa-qrcode text-2xl text-gray-400"></i>
+                                </div>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 text-center truncate w-full">example.com/1</p>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-dark-700 rounded-lg p-3 flex flex-col items-center">
+                                <div class="w-20 h-20 bg-white dark:bg-dark-800 mb-2 flex items-center justify-center">
+                                    <i class="fas fa-qrcode text-2xl text-gray-400"></i>
+                                </div>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 text-center truncate w-full">example.com/2</p>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-dark-700 rounded-lg p-3 flex flex-col items-center">
+                                <div class="w-20 h-20 bg-white dark:bg-dark-800 mb-2 flex items-center justify-center">
+                                    <i class="fas fa-qrcode text-2xl text-gray-400"></i>
+                                </div>
+                                <p class="text-xs text-gray-600 dark:text-gray-300 text-center truncate w-full">example.com/3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 dark:border-dark-700 p-4 bg-gray-50 dark:bg-dark-900">
+                <div class="flex justify-end space-x-3">
+                    <button id="cancel-batch" class="px-4 py-2 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-600 transition-all">
+                        Cancel
+                    </button>
+                    <button id="generate-batch" class="px-4 py-2 gradient-bg text-white rounded-lg hover:opacity-90 transition-all">
+                        <i class="fas fa-cogs mr-2"></i> Generate Batch
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme
+            const themeToggle = document.getElementById('theme-toggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+            
+            // Initialize charts (demo data)
+            const scansCtx = document.getElementById('scansChart').getContext('2d');
+            const scansChart = new Chart(scansCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'QR Scans',
+                        data: [120, 190, 170, 220, 300, 450],
+                        borderColor: 'rgb(124, 58, 237)',
+                        backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            const devicesCtx = document.getElementById('devicesChart').getContext('2d');
+            const devicesChart = new Chart(devicesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['iPhone', 'Android', 'Tablet', 'Desktop'],
+                    datasets: [{
+                        data: [45, 30, 10, 15],
+                        backgroundColor: [
+                            'rgb(124, 58, 237)',
+                            'rgb(99, 102, 241)',
+                            'rgb(217, 70, 239)',
+                            'rgb(79, 70, 229)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // AI Assistant functionality
+            const aiAssistantBtn = document.getElementById('ai-assistant-btn');
+            const aiAssistantPanel = document.getElementById('ai-assistant-panel');
+            const closeAiBtn = document.getElementById('close-ai-btn');
+            const aiChatInput = document.getElementById('ai-chat-input');
+            const aiSendBtn = document.getElementById('ai-send-btn');
+            const aiVoiceBtn = document.getElementById('ai-voice-btn');
+            const voiceInputIndicator = document.getElementById('voice-input-indicator');
+            const stopVoiceBtn = document.getElementById('stop-voice-btn');
+            
+            aiAssistantBtn.addEventListener('click', () => {
+                aiAssistantPanel.classList.remove('hidden');
+                setTimeout(() => {
+                    aiAssistantPanel.style.transform = 'translateY(0)';
+                    aiAssistantPanel.style.opacity = '1';
+                }, 10);
+            });
+            
+            closeAiBtn.addEventListener('click', () => {
+                aiAssistantPanel.style.transform = 'translateY(20px)';
+                aiAssistantPanel.style.opacity = '0';
+                setTimeout(() => {
+                    aiAssistantPanel.classList.add('hidden');
+                }, 300);
+            });
+            
+            aiSendBtn.addEventListener('click', sendAiMessage);
+            aiChatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendAiMessage();
+            });
+            
+            function sendAiMessage() {
+                const message = aiChatInput.value.trim();
+                if (!message) return;
+                
+                // Add user message to chat
+                addChatMessage(message, 'user');
+                aiChatInput.value = '';
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    const responses = [
+                        "I'll create a QR code for that. Should I make it dynamic so you can update it later?",
+                        "Great choice! What color scheme would you like for your QR code?",
+                        "I can generate that QR code for you. Would you like to add your logo to it?",
+                        "Perfect! I'll create a QR code with those specifications. Would you like to preview it first?"
+                    ];
+                    
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addChatMessage(randomResponse, 'ai');
+                    
+                    // Add suggestions if appropriate
+                    if (randomResponse.includes('dynamic')) {
+                        addChatSuggestions(['Yes, make it dynamic', 'No, static is fine']);
+                    } else if (randomResponse.includes('color')) {
+                        addChatSuggestions(['Purple gradient', 'Corporate colors', 'Simple black']);
+                    }
+                }, 1000);
+            }
+            
+            function addChatMessage(message, sender) {
+                const chatContainer = document.getElementById('ai-chat-container');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = sender === 'ai' ? 'ai-assistant-bubble p-3 max-w-xs md:max-w-md ml-auto' : 'user-bubble p-3 max-w-xs md:max-w-md mr-auto';
+                messageDiv.innerHTML = `<p class="text-sm text-gray-800 dark:text-white">${message}</p>`;
+                chatContainer.appendChild(messageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            function addChatSuggestions(suggestions) {
+                const chatContainer = document.getElementById('ai-chat-container');
+                const suggestionsDiv = document.createElement('div');
+                suggestionsDiv.className = 'flex space-x-2 mt-2 ml-auto max-w-xs md:max-w-md';
+                
+                suggestions.forEach(text => {
+                    const btn = document.createElement('button');
+                    btn.className = 'ai-suggestion-btn text-xs px-2 py-1 bg-primary-500 text-white rounded hover:bg-primary-600 transition-all';
+                    btn.textContent = text;
+                    btn.addEventListener('click', () => {
+                        addChatMessage(text, 'user');
+                        suggestionsDiv.remove();
+                        
+                        // Simulate AI response to suggestion
+                        setTimeout(() => {
+                            const followUps = [
+                                "Excellent choice! I'll apply that now.",
+                                "Got it! Applying your preference.",
+                                "Perfect! I'll incorporate that into your QR code."
+                            ];
+                            addChatMessage(followUps[Math.floor(Math.random() * followUps.length)], 'ai');
+                        }, 800);
+                    });
+                    suggestionsDiv.appendChild(btn);
+                });
+                
+                chatContainer.appendChild(suggestionsDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            // Voice input simulation
+            aiVoiceBtn.addEventListener('click', () => {
+                voiceInputIndicator.classList.remove('hidden');
+                
+                // Simulate voice recognition
+                setTimeout(() => {
+                    const commands = [
+                        "Create a QR code for my website example.com with a purple gradient",
+                        "Generate a WiFi QR for my cafe with password letmein",
+                        "Make a contact QR with my phone number 555-123-4567",
+                        "Create a dynamic QR for my restaurant menu"
+                    ];
+                    
+                    const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+                    
+                    // Close voice input and add message
+                    voiceInputIndicator.classList.add('hidden');
+                    aiChatInput.value = randomCommand;
+                    sendAiMessage();
+                }, 3000);
+            });
+            
+            stopVoiceBtn.addEventListener('click', () => {
+                voiceInputIndicator.classList.add('hidden');
+            });
+            
+            // Fullscreen QR preview
+            const fullscreenPreview = document.getElementById('fullscreen-preview');
+            const fullscreenPreviewBtn = document.getElementById('fullscreen-preview-btn');
+            const closeFullscreenBtn = document.getElementById('close-fullscreen-btn');
+            
+            fullscreenPreviewBtn.addEventListener('click', () => {
+                // In a real app, this would show the actual generated QR
+                fullscreenPreview.classList.remove('hidden');
+                setTimeout(() => {
+                    fullscreenPreview.style.opacity = '1';
+                }, 10);
+            });
+            
+            closeFullscreenBtn.addEventListener('click', () => {
+                fullscreenPreview.style.opacity = '0';
+                setTimeout(() => {
+                    fullscreenPreview.classList.add('hidden');
+                }, 300);
+            });
+            
+            // Dynamic QR info modal
+            const dynamicInfoModal = document.getElementById('dynamic-info-modal');
+            const dynamicInfoBtn = document.getElementById('dynamic-info-btn');
+            const closeDynamicInfo = document.getElementById('close-dynamic-info');
+            const gotItDynamicBtn = document.getElementById('got-it-dynamic-btn');
+            const modalContent = dynamicInfoModal.querySelector('div > div');
+            
+            dynamicInfoBtn.addEventListener('click', () => {
+                showModal(dynamicInfoModal, modalContent);
+            });
+            
+            closeDynamicInfo.addEventListener('click', () => {
+                hideModal(dynamicInfoModal, modalContent);
+            });
+            
+            gotItDynamicBtn.addEventListener('click', () => {
+                hideModal(dynamicInfoModal, modalContent);
+            });
+            
+            // NFC Write modal
+            const nfcWriteModal = document.getElementById('nfc-write-modal');
+            const nfcWriteBtn = document.getElementById('nfc-write-btn');
+            const closeNfcModal = document.getElementById('close-nfc-modal');
+            const cancelNfcWrite = document.getElementById('cancel-nfc-write');
+            const tryAgainNfcWrite = document.getElementById('try-again-nfc-write');
+            const nfcModalContent = nfcWriteModal.querySelector('div > div');
+            
+            nfcWriteBtn.addEventListener('click', () => {
+                showModal(nfcWriteModal, nfcModalContent);
+                
+                // Simulate NFC writing process
+                setTimeout(() => {
+                    document.getElementById('nfc-write-status').innerHTML = '<p class="text-sm text-red-500">NFC not supported in this browser</p>';
+                    tryAgainNfcWrite.classList.remove('hidden');
+                }, 2000);
+            });
+            
+            closeNfcModal.addEventListener('click', () => {
+                hideModal(nfcWriteModal, nfcModalContent);
+            });
+            
+            cancelNfcWrite.addEventListener('click', () => {
+                hideModal(nfcWriteModal, nfcModalContent);
+            });
+            
+            tryAgainNfcWrite.addEventListener('click', () => {
+                document.getElementById('nfc-write-status').innerHTML = '<p class="text-sm">Waiting for NFC tag...</p>';
+                tryAgainNfcWrite.classList.add('hidden');
+                
+                setTimeout(() => {
+                    document.getElementById('nfc-write-status').innerHTML = '<p class="text-sm text-red-500">NFC not supported in this browser</p>';
+                    tryAgainNfcWrite.classList.remove('hidden');
+                }, 2000);
+            });
+            
+            // Template gallery
+            const templateGallery = document.getElementById('template-gallery');
+            const templateBtn = document.getElementById('template-btn');
+            const closeTemplateGallery = document.getElementById('close-template-gallery');
+            const templateGalleryContent = templateGallery.querySelector('div > div');
+            
+            templateBtn.addEventListener('click', () => {
+                showModal(templateGallery, templateGalleryContent);
+            });
+            
+            closeTemplateGallery.addEventListener('click', () => {
+                hideModal(templateGallery, templateGalleryContent);
+            });
+            
+            // Batch mode
+            const batchModePanel = document.getElementById('batch-mode-panel');
+            const batchModeBtn = document.getElementById('batch-mode-btn');
+            const closeBatchMode = document.getElementById('close-batch-mode');
+            const cancelBatch = document.getElementById('cancel-batch');
+            const batchPanelContent = batchModePanel.querySelector('div > div');
+            
+            batchModeBtn.addEventListener('click', () => {
+                showModal(batchModePanel, batchPanelContent);
+            });
+            
+            closeBatchMode.addEventListener('click', () => {
+                hideModal(batchModePanel, batchPanelContent);
+            });
+            
+            cancelBatch.addEventListener('click', () => {
+                hideModal(batchModePanel, batchPanelContent);
+            });
+            
+            // Helper functions for modals
+            function showModal(modal, content) {
+                modal.classList.remove('pointer-events-none');
+                modal.classList.add('pointer-events-auto');
+                modal.style.opacity = '1';
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }
+            
+            function hideModal(modal, content) {
+                modal.classList.add('pointer-events-none');
+                modal.style.opacity = '0';
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+            }
+            
+            // Tab switching
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.getAttribute('data-tab');
+                    
+                    // Update active tab button
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'text-primary-500', 'border-primary-500');
+                        btn.classList.add('text-gray-500', 'dark:text-gray-400', 'hover:text-gray-700', 'dark:hover:text-gray-300', 'border-transparent');
+                    });
+                    
+                    button.classList.add('active', 'text-primary-500', 'border-primary-500');
+                    button.classList.remove('text-gray-500', 'dark:text-gray-400', 'hover:text-gray-700', 'dark:hover:text-gray-300', 'border-transparent');
+                    
+                    // Update active tab content
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+                });
+            });
+            
+            // Color selection
+            const colorButtons = document.querySelectorAll('.color-btn');
+            let currentColor = '#000000';
+            
+            colorButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    colorButtons.forEach(btn => {
+                        btn.classList.remove('ring-2', 'ring-primary-500');
+                    });
+                    this.classList.add('ring-2', 'ring-primary-500');
+                    currentColor = this.dataset.color;
+                });
+                
+                // Set black as default active
+                if (this.dataset.color === '#000000') {
+                    this.classList.add('ring-2', 'ring-primary-500');
+                }
+            });
+            
+            // Pattern selection
+            const patternButtons = document.querySelectorAll('.pattern-btn');
+            let currentPattern = 'squares';
+            
+            patternButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    patternButtons.forEach(btn => {
+                        btn.classList.remove('bg-primary-500', 'text-white');
+                        btn.classList.add('bg-gray-100', 'dark:bg-dark-600', 'text-gray-700', 'dark:text-gray-300');
+                    });
+                    this.classList.remove('bg-gray-100', 'dark:bg-dark-600', 'text-gray-700', 'dark:text-gray-300');
+                    this.classList.add('bg-primary-500', 'text-white');
+                    currentPattern = this.dataset.pattern;
+                });
+                
+                // Set squares as default active
+                if (this.dataset.pattern === 'squares') {
+                    this.classList.remove('bg-gray-100', 'dark:bg-dark-600', 'text-gray-700', 'dark:text-gray-300');
+                    this.classList.add('bg-primary-500', 'text-white');
+                }
+            });
+            
+            // Generate QR code
+            const generateBtn = document.getElementById('generate-btn');
+            const urlInput = document.getElementById('url-input');
+            const qrCodeElement = document.getElementById('qr-code');
+            const previewControls = document.getElementById('preview-controls');
+            
+            generateBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    showToast('Please enter a URL', 'error');
+                    return;
+                }
+                
+                // Validate URL
+                try {
+                    new URL(url);
+                } catch (e) {
+                    showToast('Please enter a valid URL (include http:// or https://)', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                generateBtn.disabled = true;
+                generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+                
+                // Clear previous QR code
+                qrCodeElement.innerHTML = '';
+                
+                // Generate QR code after a short delay
+                setTimeout(() => {
+                    QRCode.toCanvas(url, {
+                        width: 180,
+                        color: {
+                            dark: currentColor === 'gradient' ? '#7c3aed' : currentColor,
+                            light: '#ffffff'
+                        },
+                        errorCorrectionLevel: 'H'
+                    }, function(err, canvas) {
+                        generateBtn.disabled = false;
+                        generateBtn.innerHTML = '<i class="fas fa-bolt mr-2"></i> Generate Smart QR';
+                        
+                        if (err) {
+                            showToast('Could not generate QR code', 'error');
+                            console.error(err);
+                            return;
+                        }
+                        
+                        // Add canvas to DOM
+                        qrCodeElement.appendChild(canvas);
+                        
+                        // Show preview controls
+                        previewControls.classList.remove('hidden');
+                        
+                        // Add celebration effect
+                        party.confetti(generateBtn, {
+                            count: party.variation.range(20, 40),
+                            size: party.variation.range(0.5, 1.5),
+                            spread: 20
+                        });
+                        
+                        // Show toast
+                        showToast('QR code generated successfully!', 'success');
+                    });
+                }, 500);
+            });
+            
+            // Show toast notification
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg text-white font-medium flex items-center z-50 fade-in ${
+                    type === 'success' ? 'bg-green-500' : 
+                    type === 'error' ? 'bg-red-500' : 
+                    type === 'info' ? 'bg-blue-500' : 'bg-gray-500'
+                }`;
+                
+                toast.innerHTML = `
+                    <i class="fas ${
+                        type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 
+                        type === 'info' ? 'fa-info-circle' : 'fa-bell'
+                    } mr-2"></i>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => {
+                        document.body.removeChild(toast);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // AI prompt input
+            const aiPromptInput = document.getElementById('ai-prompt-input');
+            const aiSubmitBtn = document.getElementById('ai-submit-btn');
+            const voiceInputBtn = document.getElementById('voice-input-btn');
+            
+            aiSubmitBtn.addEventListener('click', () => {
+                const prompt = aiPromptInput.value.trim();
+                if (prompt) {
+                    // Show AI assistant panel with the prompt
+                    aiAssistantPanel.classList.remove('hidden');
+                    setTimeout(() => {
+                        aiAssistantPanel.style.transform = 'translateY(0)';
+                        aiAssistantPanel.style.opacity = '1';
+                        aiChatInput.value = prompt;
+                        sendAiMessage();
+                    }, 10);
+                    
+                    aiPromptInput.value = '';
+                }
+            });
+            
+            aiPromptInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    aiSubmitBtn.click();
+                }
+            });
+            
+            voiceInputBtn.addEventListener('click', () => {
+                voiceInputIndicator.classList.remove('hidden');
+                
+                // Simulate voice recognition
+                setTimeout(() => {
+                    const prompts = [
+                        "Create a QR code for my portfolio website",
+                        "Generate a WiFi QR for my office with password secure123",
+                        "Make a contact QR with my email and phone number",
+                        "Create a dynamic QR for my product catalog"
+                    ];
+                    
+                    const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+                    
+                    // Close voice input and set prompt
+                    voiceInputIndicator.classList.add('hidden');
+                    aiPromptInput.value = randomPrompt;
+                }, 2000);
+            });
+            
+            // Initialize with first tab active
+            document.querySelector('.tab-btn.active').click();
+        });
+    </script>
+</body>
+</html>

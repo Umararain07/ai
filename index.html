@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai Portal - AI-Powered Registration & Support</title>
+    <link rel="shortcut icon" href="./1.jpg" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+        }
+        .card-glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .card-glass {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #0ea5e9 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .avatar-ring {
+            border: 3px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(to right, #0ea5e9, #8b5cf6) border-box;
+        }
+        .glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .glow:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+        }
+        .chat-bubble {
+            border-radius: 20px 20px 20px 0;
+        }
+        .chat-bubble.user {
+            border-radius: 20px 20px 0 20px;
+        }
+        .wave {
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 dark:bg-dark-900 font-sans antialiased transition-colors duration-300">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute inset-0 gradient-bg opacity-20"></div>
+        <div class="absolute inset-0 opacity-10 dark:opacity-5" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')"></div>
+        <div class="absolute inset-0 opacity-10 dark:opacity-5" style="background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 20%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.8) 0%, transparent 20%)"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-12">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-white text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gradient">Ai<span class="font-light">Portal</span></h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Home</a>
+                <a href="#features" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Features</a>
+                <a href="#faq" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">FAQ</a>
+                <a href="#support" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Support</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-dark-700 transition">
+                    <i id="theme-icon" class="fas fa-moon text-dark-500 dark:text-gray-300"></i>
+                </button>
+                <button id="login-btn" class="px-4 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition font-medium">
+                    Sign In
+                </button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="flex flex-col md:flex-row items-center justify-between mb-24">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h2 class="text-4xl md:text-5xl font-bold text-dark-900 dark:text-white mb-6 leading-tight">
+                    AI-Powered <span class="text-gradient">Digital Identity</span> & Support Platform
+                </h2>
+                <p class="text-lg text-dark-600 dark:text-gray-300 mb-8">
+                    Revolutionize your online experience with our secure, intelligent portal featuring seamless registration, social integration, and AI-driven support.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <button class="px-6 py-3 rounded-full gradient-bg text-white font-medium hover:opacity-90 transition flex items-center justify-center">
+                        <i class="fas fa-rocket mr-2"></i><a href="./Qr.html"> Get Started Now</a>
+                    </button>
+                    <button class="px-6 py-3 rounded-full bg-white dark:bg-dark-700 text-primary-600 dark:text-primary-400 border border-primary-600 dark:border-primary-400 font-medium hover:bg-primary-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                        <i class="fas fa-play-circle mr-2"></i> <a href="https://www.youtube.com/watch?v=esuHH-VmAEQ"> Watch Demo</a>
+                    </button>
+                </div>
+                <div class="mt-8 flex items-center">
+                    <div class="flex -space-x-2">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-dark-600 dark:text-gray-400">Trusted by <span class="font-bold">10,000+</span> users worldwide</p>
+                        <div class="flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-dark-600 dark:text-gray-400 ml-1">4.8 (2,345 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <div class="relative max-w-md mx-auto">
+                    <div class="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-primary-300 opacity-20 animate-pulse-slow"></div>
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-secondary-300 opacity-20 animate-pulse-slow"></div>
+                    <div class="relative card-glass rounded-3xl overflow-hidden shadow-xl">
+                        <div class="p-6 bg-white/90 dark:bg-dark-800/90">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold text-dark-900 dark:text-white">Create Your Digital ID</h3>
+                                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-id-card text-primary-600 dark:text-primary-400"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Full Name</label>
+                                    <input type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white required">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input type="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white required">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Password</label>
+                                    <input type="password" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white required">
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="terms" class="w-4 h-4 text-primary-600 rounded focus:ring-primary-500 bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600 required">
+                                    <label for="terms" class="ml-2 text-sm text-dark-600 dark:text-gray-400">I agree to the <a href="#" class="text-primary-600 dark:text-primary-400 hover:underline">Terms & Conditions</a></label>
+                                </div>
+                                
+                                <button class="w-full gradient-bg text-white py-2 rounded-lg font-medium hover:opacity-90 transition mt-2">
+                                    Register Now
+                                </button>
+                                
+                                <div class="relative flex items-center py-4">
+                                    <div class="flex-grow border-t border-gray-300 dark:border-dark-600"></div>
+                                    <span class="flex-shrink mx-4 text-dark-500 dark:text-gray-500 text-sm">or continue with</span>
+                                    <div class="flex-grow border-t border-gray-300 dark:border-dark-600"></div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3">
+                                    <button class="p-2 rounded-lg border border-gray-300 dark:border-dark-600 hover:bg-gray-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                                        <i class="fab fa-google text-red-500"></i>
+                                    </button>
+                                    <button class="p-2 rounded-lg border border-gray-300 dark:border-dark-600 hover:bg-gray-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                                        <i class="fab fa-facebook-f text-blue-600"></i>
+                                    </button>
+                                    <button class="p-2 rounded-lg border border-gray-300 dark:border-dark-600 hover:bg-gray-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                                        <i class="fab fa-apple text-dark-900 dark:text-white"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="mb-24">
+            <div class="text-center mb-16">
+                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 mb-4">Why Choose Us</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-dark-900 dark:text-white mb-4">Powerful Features Designed for You</h2>
+                <p class="max-w-2xl mx-auto text-lg text-dark-600 dark:text-gray-400">Our platform combines cutting-edge technology with user-friendly design to deliver an exceptional experience.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white dark:bg-dark-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="p-6">
+                        <div class="w-14 h-14 rounded-xl gradient-bg flex items-center justify-center mb-4">
+                            <i class="fas fa-id-card text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 dark:text-white mb-2">Digital Identity</h3>
+                        <p class="text-dark-600 dark:text-gray-400 mb-4">Secure, verifiable digital identity that works across all platforms and services.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Biometric authentication</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Blockchain verification</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Cross-platform compatibility</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-white dark:bg-dark-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="p-6">
+                        <div class="w-14 h-14 rounded-xl gradient-bg flex items-center justify-center mb-4">
+                            <i class="fas fa-robot text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 dark:text-white mb-2">AI Support Assistant</h3>
+                        <p class="text-dark-600 dark:text-gray-400 mb-4">24/7 intelligent assistance that learns from your interactions.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Natural language processing</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Context-aware responses</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Multilingual support</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-white dark:bg-dark-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition">
+                    <div class="p-6">
+                        <div class="w-14 h-14 rounded-xl gradient-bg flex items-center justify-center mb-4">
+                            <i class="fas fa-share-alt text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 dark:text-white mb-2">Social Integration</h3>
+                        <p class="text-dark-600 dark:text-gray-400 mb-4">Connect with your existing social networks seamlessly.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">One-click login</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Profile synchronization</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-primary-500 mr-2"></i>
+                                <span class="text-dark-600 dark:text-gray-400">Secure data sharing</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Digital ID Showcase -->
+        <section class="mb-24">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 mb-4">Digital Identity</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 dark:text-white mb-6">Your Secure Digital Identity</h2>
+                    <p class="text-lg text-dark-600 dark:text-gray-400 mb-8">
+                        Our advanced digital ID system provides a secure, portable identity that you control. Verify your identity once and use it everywhere without compromising your privacy.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-fingerprint text-primary-600 dark:text-primary-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-dark-900 dark:text-white">Biometric Security</h4>
+                                <p class="text-dark-600 dark:text-gray-400">Facial recognition and fingerprint authentication for maximum security.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-primary-600 dark:text-primary-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-dark-900 dark:text-white">Decentralized Storage</h4>
+                                <p class="text-dark-600 dark:text-gray-400">Your data is encrypted and distributed across secure nodes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-exchange-alt text-primary-600 dark:text-primary-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-dark-900 dark:text-white">Selective Disclosure</h4>
+                                <p class="text-dark-600 dark:text-gray-400">Share only what's needed without revealing your full identity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 relative">
+                    <div class="relative max-w-md mx-auto">
+                        <div class="absolute -top-8 -left-8 w-40 h-40 rounded-full bg-primary-200 opacity-20 animate-pulse-slow"></div>
+                        <div class="relative bg-white dark:bg-dark-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-dark-700">
+                            <div class="p-6 bg-gradient-to-r from-primary-500 to-secondary-500">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xl font-bold text-white">Digital ID Card</h3>
+                                    <div class="text-white">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <div class="flex items-center mb-6">
+                                    <div class="mr-4">
+                                        <div class="w-16 h-16 rounded-full bg-gray-200 dark:bg-dark-600 overflow-hidden">
+                                            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-dark-900 dark:text-white">Sarah Johnson</h4>
+                                        <p class="text-sm text-dark-600 dark:text-gray-400">Verified Identity</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">ID Number</p>
+                                        <p class="font-mono text-dark-900 dark:text-white">NEX-5A8D-2F4G</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Issued</p>
+                                        <p class="text-dark-900 dark:text-white">15 May 2023</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Expires</p>
+                                        <p class="text-dark-900 dark:text-white">15 May 2026</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Status</p>
+                                        <p class="text-green-600 dark:text-green-400 font-medium">Active</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="border-t border-gray-200 dark:border-dark-700 pt-4">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Verification Level</p>
+                                            <div class="flex items-center">
+                                                <div class="w-24 bg-gray-200 dark:bg-dark-600 rounded-full h-2 mr-2">
+                                                    <div class="bg-primary-600 h-2 rounded-full" style="width: 100%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium text-dark-900 dark:text-white">100%</span>
+                                            </div>
+                                        </div>
+                                        <button class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300">
+                                            <i class="fas fa-qrcode text-xl"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-dark-700 border-t border-gray-200 dark:border-dark-600">
+                                <div class="flex justify-between">
+                                    <button class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium">
+                                        <i class="fas fa-download mr-1"></i> Download
+                                    </button>
+                                    <button class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium">
+                                        <i class="fas fa-share-alt mr-1"></i> Share
+                                    </button>
+                                    <button class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium">
+                                        <i class="fas fa-print mr-1"></i> Print
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Support Section -->
+        <section id="support" class="mb-24">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10 order-2 lg:order-1">
+                    <div class="bg-white dark:bg-dark-800 rounded-xl shadow-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mr-3">
+                                <i class="fas fa-robot text-primary-600 dark:text-primary-400"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 dark:text-white">AI Support Assistant</h3>
+                        </div>
+                        
+                        <div class="space-y-4 mb-6">
+                            <!-- AI Message -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                        <i class="fas fa-robot text-primary-600 dark:text-primary-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="bg-primary-50 dark:bg-dark-700 p-3 rounded-lg chat-bubble max-w-xs">
+                                    <p class="text-dark-800 dark:text-gray-300">Hi there! I'm Nova, your AI assistant. How can I help you today?</p>
+                                    <p class="text-xs text-dark-500 dark:text-gray-500 mt-1">Just now</p>
+                                </div>
+                            </div>
+                            
+                            <!-- User Message -->
+                            <div class="flex justify-end">
+                                <div class="bg-primary-100 dark:bg-primary-900/30 p-3 rounded-lg chat-bubble user max-w-xs">
+                                    <p class="text-dark-800 dark:text-gray-300">How do I reset my password?</p>
+                                    <p class="text-xs text-dark-500 dark:text-gray-500 mt-1 text-right">Just now</p>
+                                </div>
+                            </div>
+                            
+                            <!-- AI Message -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                        <i class="fas fa-robot text-primary-600 dark:text-primary-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="bg-primary-50 dark:bg-dark-700 p-3 rounded-lg chat-bubble max-w-xs">
+                                    <p class="text-dark-800 dark:text-gray-300">To reset your password:</p>
+                                    <ol class="list-decimal list-inside text-dark-800 dark:text-gray-300 mt-1 space-y-1">
+                                        <li>Go to Settings</li>
+                                        <li>Select "Security"</li>
+                                        <li>Click "Reset Password"</li>
+                                        <li>Follow the instructions</li>
+                                    </ol>
+                                    <p class="text-xs text-dark-500 dark:text-gray-500 mt-1">Just now</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Typing Indicator -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                        <i class="fas fa-robot text-primary-600 dark:text-primary-400 text-sm"></i>
+                                    </div>
+                                </div>
+                                <div class="bg-primary-50 dark:bg-dark-700 p-3 rounded-lg w-24">
+                                    <div class="flex space-x-1">
+                                        <div class="w-2 h-2 rounded-full bg-primary-400 animate-bounce" style="animation-delay: 0.1s"></div>
+                                        <div class="w-2 h-2 rounded-full bg-primary-400 animate-bounce" style="animation-delay: 0.2s"></div>
+                                        <div class="w-2 h-2 rounded-full bg-primary-400 animate-bounce" style="animation-delay: 0.3s"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="relative">
+                            <input type="text" placeholder="Type your message..." class="w-full px-4 py-2 rounded-full border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 pr-12 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white">
+                            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center hover:bg-primary-700 transition">
+                                <i class="fas fa-paper-plane text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 order-1 lg:order-2 lg:pl-10">
+                    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 mb-4">AI Support</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 dark:text-white mb-6">24/7 Intelligent Support</h2>
+                    <p class="text-lg text-dark-600 dark:text-gray-400 mb-8">
+                        Our AI assistant is always available to help with any questions or issues. It learns from every interaction to provide better, more personalized support over time.
+                    </p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-100 dark:border-dark-700 hover:shadow-md transition">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                        <i class="fas fa-bolt text-primary-600 dark:text-primary-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-dark-900 dark:text-white">Instant Responses</h4>
+                                    <p class="text-dark-600 dark:text-gray-400 text-sm">Get answers to common questions immediately, any time of day.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-100 dark:border-dark-700 hover:shadow-md transition">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                        <i class="fas fa-brain text-primary-600 dark:text-primary-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-dark-900 dark:text-white">Context-Aware</h4>
+                                    <p class="text-dark-600 dark:text-gray-400 text-sm">Remembers your history and preferences for personalized help.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-100 dark:border-dark-700 hover:shadow-md transition">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                        <i class="fas fa-exchange-alt text-primary-600 dark:text-primary-400"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-dark-900 dark:text-white">Seamless Escalation</h4>
+                                    <p class="text-dark-600 dark:text-gray-400 text-sm">Automatically connects you to human support when needed.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="mb-24">
+            <div class="text-center mb-16">
+                <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 mb-4">Help Center</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-dark-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+                <p class="max-w-2xl mx-auto text-lg text-dark-600 dark:text-gray-400">Can't find what you're looking for? Our AI assistant is always ready to help.</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-100 dark:border-dark-700 overflow-hidden hover:shadow-md transition">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 text-left">
+                            <h3 class="text-lg font-medium text-dark-900 dark:text-white">How do I create a digital ID?</h3>
+                            <i class="fas fa-chevron-down text-primary-600 dark:text-primary-400 transition-transform transform"></i>
+                        </button>
+                        <div class="faq-content px-6 pb-6 hidden">
+                            <div class="text-dark-600 dark:text-gray-400">
+                                <p>Creating your digital ID is simple:</p>
+                                <ol class="list-decimal list-inside mt-2 space-y-1">
+                                    <li>Click on "Register" at the top right of the page</li>
+                                    <li>Fill in your basic information</li>
+                                    <li>Verify your identity using one of our secure methods</li>
+                                    <li>Set up your security preferences</li>
+                                    <li>Your digital ID will be generated and ready to use</li>
+                                </ol>
+                                <p class="mt-2">The entire process takes less than 5 minutes and you'll have access to all our services immediately.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-100 dark:border-dark-700 overflow-hidden hover:shadow-md transition">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 text-left">
+                            <h3 class="text-lg font-medium text-dark-900 dark:text-white">Is my personal information secure?</h3>
+                            <i class="fas fa-chevron-down text-primary-600 dark:text-primary-400 transition-transform transform"></i>
+                        </button>
+                        <div class="faq-content px-6 pb-6 hidden">
+                            <div class="text-dark-600 dark:text-gray-400">
+                                <p>Absolutely. We take security and privacy very seriously:</p>
+                                <ul class="list-disc list-inside mt-2 space-y-1">
+                                    <li>All data is encrypted using military-grade AES-256 encryption</li>
+                                    <li>We use decentralized storage to prevent single points of failure</li>
+                                    <li>Biometric authentication ensures only you can access your account</li>
+                                    <li>We never sell or share your data with third parties</li>
+                                    <li>Regular security audits by independent firms</li>
+                                </ul>
+                                <p class="mt-2">You have complete control over what information you share and with whom.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-100 dark:border-dark-700 overflow-hidden hover:shadow-md transition">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 text-left">
+                            <h3 class="text-lg font-medium text-dark-900 dark:text-white">Can I integrate my social media accounts?</h3>
+                            <i class="fas fa-chevron-down text-primary-600 dark:text-primary-400 transition-transform transform"></i>
+                        </button>
+                        <div class="faq-content px-6 pb-6 hidden">
+                            <div class="text-dark-600 dark:text-gray-400">
+                                <p>Yes, our platform supports seamless integration with all major social networks:</p>
+                                <div class="grid grid-cols-2 gap-4 mt-4">
+                                    <div class="flex items-center p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                        <i class="fab fa-facebook text-blue-600 text-xl mr-3"></i>
+                                        <span class="dark:text-gray-300">Facebook</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                        <i class="fab fa-twitter text-blue-400 text-xl mr-3"></i>
+                                        <span class="dark:text-gray-300">Twitter</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                        <i class="fab fa-google text-red-500 text-xl mr-3"></i>
+                                        <span class="dark:text-gray-300">Google</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                        <i class="fab fa-linkedin text-blue-700 text-xl mr-3"></i>
+                                        <span class="dark:text-gray-300">LinkedIn</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                        <i class="fab fa-apple text-dark-900 dark:text-white text-xl mr-3"></i>
+                                        <span class="dark:text-gray-300">Apple</span>
+                                    </div>
+                                    <div class="flex items-center p-3 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                        <i class="fab fa-github text-dark-900 dark:text-white text-xl mr-3"></i>
+                                        <span class="dark:text-gray-300">GitHub</span>
+                                    </div>
+                                </div>
+                                <p class="mt-4">You can connect as many or as few accounts as you like, and manage permissions individually.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-100 dark:border-dark-700 overflow-hidden hover:shadow-md transition">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 text-left">
+                            <h3 class="text-lg font-medium text-dark-900 dark:text-white">How does the AI assistant work?</h3>
+                            <i class="fas fa-chevron-down text-primary-600 dark:text-primary-400 transition-transform transform"></i>
+                        </button>
+                        <div class="faq-content px-6 pb-6 hidden">
+                            <div class="text-dark-600 dark:text-gray-400">
+                                <p>Our AI assistant, Nova, uses advanced natural language processing and machine learning to provide intelligent support:</p>
+                                <div class="flex items-start mt-4">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                            <i class="fas fa-robot text-primary-600 dark:text-primary-400 text-sm"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="font-medium dark:text-white">Key Features:</p>
+                                        <ul class="list-disc list-inside mt-1 space-y-1">
+                                            <li>Understands context and remembers conversation history</li>
+                                            <li>Learns from your preferences and behavior patterns</li>
+                                            <li>Provides instant answers to common questions</li>
+                                            <li>Escalates to human support when needed</li>
+                                            <li>Available 24/7 in multiple languages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="mt-4">The more you interact with Nova, the better it becomes at anticipating your needs and providing personalized assistance.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 5 -->
+                    <div class="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-100 dark:border-dark-700 overflow-hidden hover:shadow-md transition">
+                        <button class="faq-toggle w-full flex justify-between items-center p-6 text-left">
+                            <h3 class="text-lg font-medium text-dark-900 dark:text-white">What if I need to update my information?</h3>
+                            <i class="fas fa-chevron-down text-primary-600 dark:text-primary-400 transition-transform transform"></i>
+                        </button>
+                        <div class="faq-content px-6 pb-6 hidden">
+                            <div class="text-dark-600 dark:text-gray-400">
+                                <p>Updating your information is easy and secure:</p>
+                                <div class="mt-4 p-4 bg-gray-50 dark:bg-dark-700 rounded-lg">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-info-circle text-primary-600 dark:text-primary-400 mr-3"></i>
+                                        <p class="text-sm dark:text-gray-400">For security reasons, some changes may require additional verification.</p>
+                                    </div>
+                                </div>
+                                <p class="mt-4"><strong>To update your information:</strong></p>
+                                <ol class="list-decimal list-inside mt-2 space-y-1">
+                                    <li>Go to your profile settings</li>
+                                    <li>Click "Edit" next to the information you want to update</li>
+                                    <li>Make your changes and save</li>
+                                    <li>Verify the changes if prompted</li>
+                                </ol>
+                                <p class="mt-4">All changes are logged in your activity history for security and transparency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-10 text-center">
+                    <p class="text-dark-600 dark:text-gray-400 mb-4">Still have questions?</p>
+                    <button class="px-6 py-3 rounded-full gradient-bg text-white font-medium hover:opacity-90 transition inline-flex items-center">
+                        <i class="fas fa-comment-dots mr-2"></i> <a href="https://www.kommunicate.io/livechat-demo?appId=1345b6cdae80a0f51030255e67043866d&botIds=saylanichatbotai-e3fyh&assignee=saylanichatbotai-e3fyh&languageCode=en"> Chat with Our AI Assistant</a>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="gradient-bg rounded-3xl overflow-hidden shadow-xl mb-24">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 p-10 lg:p-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Experience the Future of Digital Identity?</h2>
+                    <p class="text-lg text-white/90 mb-8">Join thousands of users who are enjoying secure, seamless access to services with our AI-powered platform.</p>
+                    <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                        <button class="px-6 py-3 rounded-full bg-white text-primary-600 font-medium hover:bg-gray-100 transition flex items-center justify-center">
+                            <i class="fas fa-play mr-2"></i> Watch Demo
+                        </button>
+                        <button class="px-6 py-3 rounded-full bg-white/10 text-white border border-white/30 font-medium hover:bg-white/20 transition flex items-center justify-center">
+                            <i class="fas fa-file-alt mr-2"></i> Documentation
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="absolute -top-20 -right-10 w-64 h-64 rounded-full bg-white/10 animate-pulse-slow"></div>
+                    <div class="relative p-10 lg:p-16">
+                        <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-lg p-6 max-w-md mx-auto">
+                            <div class="flex items-center mb-6">
+                                <div class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center mr-3">
+                                    <i class="fas fa-gem text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-dark-900 dark:text-white">Premium Features</h3>
+                                    <p class="text-sm text-dark-600 dark:text-gray-400">Unlock the full potential</p>
+                                </div>
+                            </div>
+                            
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span class="text-dark-700 dark:text-gray-300">Advanced biometric authentication</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span class="text-dark-700 dark:text-gray-300">Priority AI support</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span class="text-dark-700 dark:text-gray-300">Unlimited social integrations</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span class="text-dark-700 dark:text-gray-300">Custom digital ID templates</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    <span class="text-dark-700 dark:text-gray-300">Family sharing</span>
+                                </li>
+                            </ul>
+                            
+                            <div class="bg-gray-50 dark:bg-dark-700 p-4 rounded-lg mb-6">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <p class="text-sm text-dark-500 dark:text-gray-500">Premium Plan</p>
+                                        <p class="text-2xl font-bold text-dark-900 dark:text-white">$9.99<span class="text-sm font-normal text-dark-500 dark:text-gray-500">/month</span></p>
+                                    </div>
+                                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-xs font-medium rounded">Popular</span>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full gradient-bg text-white py-3 rounded-lg font-medium hover:opacity-90 transition">
+                                Start 7-Day Free Trial
+                            </button>
+                            
+                            <p class="text-xs text-center text-dark-500 dark:text-gray-500 mt-3">No credit card required. Cancel anytime.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-gray-200 dark:border-dark-700 pt-12 pb-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-8">
+                <div class="col-span-2">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full gradient-bg flex items-center justify-center mr-3">
+                            <i class="fas fa-robot text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gradient">AiPortal</h3>
+                    </div>
+                    <p class="text-dark-600 dark:text-gray-400 mb-4">The future of digital identity and AI-powered support.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 flex items-center justify-center transition">
+                            <i class="fab fa-twitter text-gray-600 dark:text-gray-400"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 flex items-center justify-center transition">
+                            <i class="fab fa-facebook-f text-gray-600 dark:text-gray-400"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 flex items-center justify-center transition">
+                            <i class="fab fa-linkedin-in text-gray-600 dark:text-gray-400"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 flex items-center justify-center transition">
+                            <i class="fab fa-github text-gray-600 dark:text-gray-400"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-dark-900 dark:text-white uppercase tracking-wider mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Features</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Pricing</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Documentation</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Releases</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-dark-900 dark:text-white uppercase tracking-wider mb-4">Company</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">About</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Careers</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Press</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-semibold text-dark-900 dark:text-white uppercase tracking-wider mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Privacy</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Terms</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Cookie Policy</a></li>
+                        <li><a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-200 dark:border-dark-700 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-dark-600 dark:text-gray-400 mb-4 md:mb-0">© 2023 AiPortal. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Privacy Policy</a>
+                    <a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Terms of Service</a>
+                    <a href="#" class="text-dark-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition">Cookies</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white dark:bg-dark-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white dark:bg-dark-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-primary-100 dark:bg-primary-900/30 sm:mx-0 sm:h-10 sm:w-10">
+                            <i class="fas fa-sign-in-alt text-primary-600 dark:text-primary-400"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                                Sign in to your account
+                            </h3>
+                            <div class="mt-4">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email address</label>
+                                        <input type="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                                        <input type="password" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white">
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary-600 dark:text-primary-400 focus:ring-primary-500 border-gray-300 dark:border-dark-600 rounded bg-white dark:bg-dark-700">
+                                            <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-400">
+                                                Remember me
+                                            </label>
+                                        </div>
+                                        <div class="text-sm">
+                                            <a href="#" class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300">
+                                                Forgot your password?
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-dark-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-600 text-base font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Sign in
+                    </button>
+                    <button id="close-login-modal" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-dark-600 shadow-sm px-4 py-2 bg-white dark:bg-dark-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-dark-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Cancel
+                    </button>
+                </div>
+                <div class="px-4 py-3 bg-gray-50 dark:bg-dark-700 border-t border-gray-200 dark:border-dark-600">
+                    <p class="text-sm text-center text-gray-600 dark:text-gray-400">
+                        Don't have an account? <a href="#" class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-4 right-4 hidden">
+        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-lg overflow-hidden w-80 border border-gray-200 dark:border-dark-700">
+            <div class="p-4">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                            <i class="fas fa-check text-green-600 dark:text-green-400"></i>
+                        </div>
+                    </div>
+                    <div class="ml-3">
+                        <h4 class="text-sm font-medium text-gray-900 dark:text-white">Success</h4>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">You've successfully signed in to your account.</p>
+                    </div>
+                    <button id="close-toast" class="ml-auto -mx-1.5 -my-1.5 bg-white dark:bg-dark-800 text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 dark:hover:bg-dark-700 inline-flex h-8 w-8">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="bg-gray-100 dark:bg-dark-700 px-4 py-2">
+                <div class="text-xs text-gray-600 dark:text-gray-400">Just now</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        
+        // Check for saved user preference or use system preference
+        const savedTheme = localStorage.getItem('theme') || 
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // Toggle FAQ items
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+                
+                // Close other open FAQs in the same group
+                if (!content.classList.contains('hidden')) {
+                    const parent = button.closest('.space-y-4');
+                    parent.querySelectorAll('.faq-content').forEach(item => {
+                        if (item !== content && !item.classList.contains('hidden')) {
+                            item.classList.add('hidden');
+                            item.previousElementSibling.querySelector('i').classList.remove('rotate-180');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Login modal
+        const loginBtn = document.getElementById('login-btn');
+        const loginModal = document.getElementById('login-modal');
+        const closeLoginModal = document.getElementById('close-login-modal');
+        
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        });
+        
+        closeLoginModal.addEventListener('click', () => {
+            loginModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        });
+        
+        // Show toast notification (demo)
+        setTimeout(() => {
+            const toast = document.getElementById('toast');
+            const closeToast = document.getElementById('close-toast');
+            
+            toast.classList.remove('hidden');
+            
+            closeToast.addEventListener('click', () => {
+                toast.classList.add('hidden');
+            });
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        }, 3000);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Animate elements when they come into view
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.card-glass, .faq-toggle, [class*="hover:shadow"]');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('animate-fadeIn');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        animateOnScroll(); // Run once on page load
+        
+        // Demo form submission
+        const registerForm = document.querySelector('.card-glass form');
+        if (registerForm) {
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Registration successful! Welcome to AiPortal.');
+                registerForm.reset();
+            });
+        }
+        
+        // Simulate AI assistant typing
+        const simulateTyping = () => {
+            const typingIndicator = document.querySelector('.faq-content:not(.hidden) .animate-bounce');
+            if (typingIndicator) {
+                setTimeout(() => {
+                    const aiResponse = document.createElement('div');
+                    aiResponse.className = 'flex';
+                    aiResponse.innerHTML = `
+                        <div class="flex-shrink-0 mr-3">
+                            <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                <i class="fas fa-robot text-primary-600 dark:text-primary-400 text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="bg-primary-50 dark:bg-dark-700 p-3 rounded-lg chat-bubble max-w-xs">
+                            <p class="text-dark-800 dark:text-gray-300">I'd be happy to help with that! Here's some additional information that might be useful...</p>
+                            <p class="text-xs text-dark-500 dark:text-gray-500 mt-1">Just now</p>
+                        </div>
+                    `;
+                    typingIndicator.parentElement.parentElement.insertBefore(aiResponse, typingIndicator.parentElement.nextSibling);
+                    typingIndicator.parentElement.remove();
+                }, 2000);
+            }
+        };
+        
+        // Watch for FAQ opens to simulate AI response
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                setTimeout(simulateTyping, 500);
+            });
+        });
+    </script>
+
+<!--  -->
+<script type="text/javascript">
+    (function(d, m){
+        var kommunicateSettings = 
+            {"appId":"1345b6cdae80a0f51030255e67043866d","popupWidget":true,"automaticChatOpenOnNavigation":true};
+        var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+        window.kommunicate = m; m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script> web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+<!--  -->
+
+</body>
+</html>

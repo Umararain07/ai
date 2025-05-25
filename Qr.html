@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Portal - AI-Powered Registration & Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%);
+        }
+        .card-glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dark .card-glass {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, #0ea5e9 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .avatar-ring {
+            border: 3px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(to right, #0ea5e9, #8b5cf6) border-box;
+        }
+        .glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+        .glow:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+        }
+        .chat-bubble {
+            border-radius: 20px 20px 20px 0;
+        }
+        .chat-bubble.user {
+            border-radius: 20px 20px 0 20px;
+        }
+        .wave {
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+        #qr-modal {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        #qr-modal.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        #qr-modal:not(.hidden) {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 dark:bg-dark-900 font-sans antialiased transition-colors duration-300">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden -z-10">
+        <div class="absolute inset-0 gradient-bg opacity-20"></div>
+        <div class="absolute inset-0 opacity-10 dark:opacity-5" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==')"></div>
+        <div class="absolute inset-0 opacity-10 dark:opacity-5" style="background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 20%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.8) 0%, transparent 20%)"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-12">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full gradient-bg flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-white text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gradient">ID<span class="font-light">Portal</span></h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Home</a>
+                <a href="#features" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Features</a>
+                <a href="#faq" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">FAQ</a>
+                <a href="#support" class="text-dark-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition">Support</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-dark-700 transition">
+                    <i id="theme-icon" class="fas fa-moon text-dark-500 dark:text-gray-300"></i>
+                </button>
+                <button id="login-btn" class="px-4 py-2 rounded-full bg-primary-600 text-white hover:bg-primary-700 transition font-medium">
+                    Sign In
+                </button>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="flex flex-col md:flex-row items-center justify-between mb-24">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h2 class="text-4xl md:text-5xl font-bold text-dark-900 dark:text-white mb-6 leading-tight">
+                    AI-Powered <span class="text-gradient">Digital Identity</span> & Support Platform
+                </h2>
+                <p class="text-lg text-dark-600 dark:text-gray-300 mb-8">
+                    Revolutionize your online experience with our secure, intelligent portal featuring seamless registration, social integration, and AI-driven support.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <button class="px-6 py-3 rounded-full gradient-bg text-white font-medium hover:opacity-90 transition flex items-center justify-center">
+                        <i class="fas fa-rocket mr-2"></i> Get Started Now
+                    </button>
+                    <button class="px-6 py-3 rounded-full bg-white dark:bg-dark-700 text-primary-600 dark:text-primary-400 border border-primary-600 dark:border-primary-400 font-medium hover:bg-primary-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                        <i class="fas fa-play-circle mr-2"></i> <a href="https://www.youtube.com/watch?v=fSssuzyIXgw"> Watch Demo</a>
+                    </button>
+                </div>
+                <div class="mt-8 flex items-center">
+                    <div class="flex -space-x-2">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="w-10 h-10 rounded-full border-2 border-white dark:border-dark-700" alt="User">
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm text-dark-600 dark:text-gray-400">Trusted by <span class="font-bold">10,000+</span> users worldwide</p>
+                        <div class="flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-dark-600 dark:text-gray-400 ml-1">4.8 (2,345 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <div class="relative max-w-md mx-auto">
+                    <div class="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-primary-300 opacity-20 animate-pulse-slow"></div>
+                    <div class="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-secondary-300 opacity-20 animate-pulse-slow"></div>
+                    <div class="relative card-glass rounded-3xl overflow-hidden shadow-xl">
+                        <div class="p-6 bg-white/90 dark:bg-dark-800/90">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-xl font-bold text-dark-900 dark:text-white">Create Your Digital ID</h3>
+                                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-id-card text-primary-600 dark:text-primary-400"></i>
+                                </div>
+                            </div>
+                            
+                            <form id="registration-form" class="space-y-4">
+                                <div>
+                                    <label for="full-name" class="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Full Name</label>
+                                    <input type="text" id="full-name" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white" required>
+                                </div>
+                                
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Email</label>
+                                    <input type="email" id="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white" required>
+                                </div>
+                                
+                                <div>
+                                    <label for="password" class="block text-sm font-medium text-dark-700 dark:text-gray-300 mb-1">Password</label>
+                                    <input type="password" id="password" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-dark-600 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition bg-white dark:bg-dark-700 text-dark-900 dark:text-white" required>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="terms" class="w-4 h-4 text-primary-600 rounded focus:ring-primary-500 bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600" required>
+                                    <label for="terms" class="ml-2 text-sm text-dark-600 dark:text-gray-400">I agree to the <a href="#" class="text-primary-600 dark:text-primary-400 hover:underline">Terms & Conditions</a></label>
+                                </div>
+                                
+                                <button type="submit" class="w-full gradient-bg text-white py-2 rounded-lg font-medium hover:opacity-90 transition mt-2">
+                                    Register Now
+                                </button>
+                                
+                                <div class="relative flex items-center py-4">
+                                    <div class="flex-grow border-t border-gray-300 dark:border-dark-600"></div>
+                                    <span class="flex-shrink mx-4 text-dark-500 dark:text-gray-500 text-sm">or continue with</span>
+                                    <div class="flex-grow border-t border-gray-300 dark:border-dark-600"></div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3">
+                                    <button type="button" class="p-2 rounded-lg border border-gray-300 dark:border-dark-600 hover:bg-gray-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                                        <i class="fab fa-google text-red-500"></i>
+                                    </button>
+                                    <button type="button" class="p-2 rounded-lg border border-gray-300 dark:border-dark-600 hover:bg-gray-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                                        <i class="fab fa-facebook-f text-blue-600"></i>
+                                    </button>
+                                    <button type="button" class="p-2 rounded-lg border border-gray-300 dark:border-dark-600 hover:bg-gray-50 dark:hover:bg-dark-600 transition flex items-center justify-center">
+                                        <i class="fab fa-apple text-dark-900 dark:text-white"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Digital ID Showcase -->
+        <section class="mb-24">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <span class="inline-block px-3 py-1 text-sm font-medium rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-200 mb-4">Digital Identity</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 dark:text-white mb-6">Your Secure Digital Identity</h2>
+                    <p class="text-lg text-dark-600 dark:text-gray-400 mb-8">
+                        Our advanced digital ID system provides a secure, portable identity that you control. Verify your identity once and use it everywhere without compromising your privacy.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-fingerprint text-primary-600 dark:text-primary-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-dark-900 dark:text-white">Biometric Security</h4>
+                                <p class="text-dark-600 dark:text-gray-400">Facial recognition and fingerprint authentication for maximum security.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-primary-600 dark:text-primary-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-dark-900 dark:text-white">Decentralized Storage</h4>
+                                <p class="text-dark-600 dark:text-gray-400">Your data is encrypted and distributed across secure nodes.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                                    <i class="fas fa-exchange-alt text-primary-600 dark:text-primary-400 text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold text-dark-900 dark:text-white">Selective Disclosure</h4>
+                                <p class="text-dark-600 dark:text-gray-400">Share only what's needed without revealing your full identity.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 relative">
+                    <div class="relative max-w-md mx-auto">
+                        <div class="absolute -top-8 -left-8 w-40 h-40 rounded-full bg-primary-200 opacity-20 animate-pulse-slow"></div>
+                        <div id="digital-id-card" class="relative bg-white dark:bg-dark-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-dark-700 hidden">
+                            <div class="p-6 bg-gradient-to-r from-primary-500 to-secondary-500">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xl font-bold text-white">Digital ID Card</h3>
+                                    <div class="text-white">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6">
+                                <div class="flex items-center mb-6">
+                                    <div class="mr-4">
+                                        <div class="w-16 h-16 rounded-full bg-gray-200 dark:bg-dark-600 overflow-hidden">
+                                            <img id="user-avatar" src="" alt="User" class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 id="user-name" class="font-bold text-dark-900 dark:text-white"></h4>
+                                        <p class="text-sm text-dark-600 dark:text-gray-400">Verified Identity</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">ID Number</p>
+                                        <p id="user-id" class="font-mono text-dark-900 dark:text-white"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Issued</p>
+                                        <p id="issued-date" class="text-dark-900 dark:text-white"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Expires</p>
+                                        <p id="expiry-date" class="text-dark-900 dark:text-white"></p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Status</p>
+                                        <p class="text-green-600 dark:text-green-400 font-medium">Active</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="border-t border-gray-200 dark:border-dark-700 pt-4">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-xs text-dark-500 dark:text-gray-500 uppercase tracking-wider mb-1">Verification Level</p>
+                                            <div class="flex items-center">
+                                                <div class="w-24 bg-gray-200 dark:bg-dark-600 rounded-full h-2 mr-2">
+                                                    <div class="bg-primary-600 h-2 rounded-full" style="width: 100%"></div>
+                                                </div>
+                                                <span class="text-sm font-medium text-dark-900 dark:text-white">100%</span>
+                                            </div>
+                                        </div>
+                                        <button id="qr-button" class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300">
+                                            <i class="fas fa-qrcode text-xl"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 bg-gray-50 dark:bg-dark-700 border-t border-gray-200 dark:border-dark-600">
+                                <div class="flex justify-between">
+                                    <button id="download-id" class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium">
+                                        <i class="fas fa-download mr-1"></i> Download
+                                    </button>
+                                    <button id="share-id" class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium">
+                                        <i class="fas fa-share-alt mr-1"></i> Share
+                                    </button>
+                                    <button id="print-id" class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium">
+                                        <i class="fas fa-print mr-1"></i> Print
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QR Code Modal -->
+        <div id="qr-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50 transition">
+            <div class="bg-white dark:bg-dark-800 rounded-xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-dark-900 dark:text-white">Digital ID QR Code</h3>
+                    <button id="close-qr-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <canvas id="qr-code" class="w-48 h-48"></canvas>
+                </div>
+                <p class="text-sm text-center text-dark-600 dark:text-gray-400">Scan this QR code to verify the digital identity</p>
+            </div>
+        </div>
+
+        <!-- Rest of the sections (Features, AI Support, FAQ, CTA) remain the same as before -->
+        <!-- ... -->
+
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+        
+        // Check for saved user preference or use system preference
+        const savedTheme = localStorage.getItem('theme') || 
+                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            html.classList.remove('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // Generate a unique ID
+        function generateUniqueId() {
+            const prefix = 'NEX-';
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let result = '';
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return prefix + result.match(/.{1,4}/g).join('-');
+        }
+
+        // Format date
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Registration form submission
+        const registrationForm = document.getElementById('registration-form');
+        const digitalIdCard = document.getElementById('digital-id-card');
+        const userName = document.getElementById('user-name');
+        const userAvatar = document.getElementById('user-avatar');
+        const userId = document.getElementById('user-id');
+        const issuedDate = document.getElementById('issued-date');
+        const expiryDate = document.getElementById('expiry-date');
+        const qrButton = document.getElementById('qr-button');
+        const qrModal = document.getElementById('qr-modal');
+        const closeQrModal = document.getElementById('close-qr-modal');
+        const qrCodeCanvas = document.getElementById('qr-code');
+        const downloadButton = document.getElementById('download-id');
+        const shareButton = document.getElementById('share-id');
+        const printButton = document.getElementById('print-id');
+
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const fullName = document.getElementById('full-name').value;
+            const email = document.getElementById('email').value;
+            
+            // Generate user data
+            const today = new Date();
+            const expiry = new Date();
+            expiry.setFullYear(today.getFullYear() + 3); // 3 years expiry
+            
+            // Generate a random avatar based on name
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=random&size=128`;
+            
+            // Update the digital ID card
+            userName.textContent = fullName;
+            userAvatar.src = avatarUrl;
+            userId.textContent = generateUniqueId();
+            issuedDate.textContent = formatDate(today);
+            expiryDate.textContent = formatDate(expiry);
+            
+            // Show the digital ID card
+            digitalIdCard.classList.remove('hidden');
+            
+            // Generate QR code data
+            const qrData = JSON.stringify({
+                id: userId.textContent,
+                name: fullName,
+                email: email,
+                issued: issuedDate.textContent,
+                expires: expiryDate.textContent,
+                status: 'Active'
+            });
+            
+            // Generate QR code
+            QRCode.toCanvas(qrCodeCanvas, qrData, {
+                width: 200,
+                margin: 2,
+                color: {
+                    dark: '#0f172a',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) console.error(error);
+            });
+            
+            // Scroll to the digital ID card
+            digitalIdCard.scrollIntoView({ behavior: 'smooth' });
+            
+            // Show success message
+            alert('Registration successful! Your Digital ID has been created.');
+        });
+
+        // QR Code Modal
+        qrButton.addEventListener('click', function() {
+            qrModal.classList.remove('hidden');
+        });
+
+        closeQrModal.addEventListener('click', function() {
+            qrModal.classList.add('hidden');
+        });
+
+        // Download Digital ID as PNG
+        downloadButton.addEventListener('click', function() {
+            html2canvas(digitalIdCard).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'digital-id.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+
+        // Share Digital ID
+        shareButton.addEventListener('click', function() {
+            if (navigator.share) {
+                html2canvas(digitalIdCard).then(canvas => {
+                    canvas.toBlob(function(blob) {
+                        const file = new File([blob], 'digital-id.png', { type: 'image/png' });
+                        navigator.share({
+                            title: 'My Digital ID',
+                            text: 'Check out my digital identity card',
+                            files: [file]
+                        }).catch(err => {
+                            console.log('Error sharing:', err);
+                            fallbackShare();
+                        });
+                    });
+                });
+            } else {
+                fallbackShare();
+            }
+        });
+
+        function fallbackShare() {
+            html2canvas(digitalIdCard).then(canvas => {
+                const dataUrl = canvas.toDataURL('image/png');
+                const tempLink = document.createElement('a');
+                tempLink.href = dataUrl;
+                tempLink.download = 'digital-id.png';
+                tempLink.click();
+                alert('Your digital ID has been downloaded. You can now share it manually.');
+            });
+        }
+
+        // Print Digital ID
+        printButton.addEventListener('click', function() {
+            const printWindow = window.open('', '', 'width=800,height=600');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Digital ID Card</title>
+                    <style>
+                        body { margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+                        @media print {
+                            body { height: auto; }
+                            #print-id-card { box-shadow: none; margin: 0; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div id="print-id-card">${digitalIdCard.outerHTML}</div>
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.print();
+                                window.close();
+                            }, 500);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        });
+
+        // Rest of the JavaScript (FAQ toggles, login modal, etc.) remains the same as before
+        // ...
+    </script>
+
+
+
+<script type="text/javascript">
+    (function(d, m){
+        var kommunicateSettings = 
+            {"appId":"1345b6cdae80a0f51030255e67043866d","popupWidget":true,"automaticChatOpenOnNavigation":true};
+        var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+        window.kommunicate = m; m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+
+</body>
+</html>
